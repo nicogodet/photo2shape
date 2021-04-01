@@ -1,6 +1,9 @@
 SOURCES = __init__.py \
           photo2shapeplugin.py \
-          photoimporter.py \
+          photoimportertask.py \
+		  backends/backendbase.py \
+		  backends/exifpybackend.py \
+		  backends/gdalbackend.py \
           gui/photo2shapedialog.py \
           gui/aboutdialog.py
 

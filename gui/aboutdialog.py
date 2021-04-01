@@ -4,8 +4,8 @@
 ***************************************************************************
     aboutdialog.py
     ---------------------
-    Date                 : July 2013
-    Copyright            : (C) 2013-2018 by Alexander Bruy
+    Date                 : January 2018
+    Copyright            : (C) 2018 by Alexander Bruy
     Email                : alexander dot bruy at gmail dot com
 ***************************************************************************
 *                                                                         *
@@ -18,8 +18,8 @@
 """
 
 __author__ = 'Alexander Bruy'
-__date__ = 'July 2013'
-__copyright__ = '(C) 2013-2018, Alexander Bruy'
+__date__ = 'January 2018'
+__copyright__ = '(C) 2018, Alexander Bruy'
 
 # This will get replaced with a git SHA1 when you do a git archive
 
@@ -29,14 +29,14 @@ import os
 import configparser
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QTextDocument, QPixmap, QDesktopServices
+from qgis.PyQt.QtGui import QPixmap, QDesktopServices
 from qgis.PyQt.QtCore import QUrl
 from qgis.PyQt.QtWidgets import QDialogButtonBox, QDialog
 
 from qgis.core import QgsApplication
 
 pluginPath = os.path.split(os.path.dirname(__file__))[0]
-WIDGET, BASE = uic.loadUiType(os.path.join(pluginPath, "ui", "aboutdialogbase.ui"))
+WIDGET, BASE = uic.loadUiType(os.path.join(pluginPath, 'ui', 'aboutdialogbase.ui'))
 
 
 class AboutDialog(BASE, WIDGET):
@@ -44,20 +44,30 @@ class AboutDialog(BASE, WIDGET):
         super(AboutDialog, self).__init__(parent)
         self.setupUi(self)
 
-        self.btnHelp = self.buttonBox.button(QDialogButtonBox.Help)
-
         cfg = configparser.ConfigParser()
-        cfg.read(os.path.join(pluginPath, "metadata.txt"))
-        version = cfg["general"]["version"]
+        cfg.read(os.path.join(pluginPath, 'metadata.txt'))
+        name = cfg['general']['name']
+        about = cfg['general']['about']
+        version = cfg['general']['version']
+        icon = cfg['general']['icon']
+        author = cfg['general']['author']
+        home = cfg['general']['homepage']
+        bugs = cfg['general']['tracker']
 
-        self.lblLogo.setPixmap(
-            QPixmap(os.path.join(pluginPath, "icons", "photo2shape.png")))
-        self.lblVersion.setText(self.tr("Version: {}").format(version))
+        self.setWindowTitle(self.tr('About {}'.format(name)))
+        self.lblName.setText('<h1>{}</h1>'.format(name))
 
-        doc = QTextDocument()
-        doc.setHtml(self.aboutText())
-        self.textBrowser.setDocument(doc)
-        self.textBrowser.setOpenExternalLinks(True)
+        self.lblLogo.setPixmap(QPixmap(os.path.join(pluginPath, *icon.split('/'))))
+        self.lblVersion.setText(self.tr('Version: {}'.format(version)))
+
+        self.textBrowser.setHtml(self.tr(
+            '<p>{description}</p>'
+            '<p><strong>Developers</strong>: {developer}</p>'
+            '<p><strong>Homepage</strong>: <a href="{homepage}">{homepage}</a></p>'
+            '<p>Please report bugs at <a href="{bugtracker}">bugtracker</a>.</p>'.format(description=about,
+                                                                                         developer=author,
+                                                                                         homepage=self.home,
+                                                                                         bugtracker=bugs)))
 
         self.buttonBox.helpRequested.connect(self.openHelp)
 
@@ -66,19 +76,7 @@ class AboutDialog(BASE, WIDGET):
 
         if locale in ['uk']:
             QDesktopServices.openUrl(
-                QUrl('https://github.com/alexbruy/photo2shape'))
+                QUrl(self.home))
         else:
             QDesktopServices.openUrl(
-                QUrl('https://github.com/alexbruy/photo2shape'))
-
-    def aboutText(self):
-        return self.tr(
-            "<p>Create point shapefile from a set of geotagged photos. "
-            "Inspired by ImagesToShape plugin by Tim Sutton.</p>"
-            "<p><strong>Developers</strong>: Alexander Bruy</p>"
-            "<p><strong>Homepage</strong>: "
-            "<a href='https://github.com/alexbruy/photo2shape'>"
-            "https://github.com/alexbruy/photo2shape</a></p>"
-            "<p>Please report bugs at "
-            "<a href='https://github.com/alexbruy/photo2shape/issues'>"
-            "bugtracker</a>.</p>")
+                QUrl(self.home))

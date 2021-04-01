@@ -28,153 +28,104 @@ __revision__ = '$Format:%H$'
 import os
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QThread
-from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QMessageBox
 
-from qgis.core import QgsSettings, QgsVectorLayer, QgsProject, QgsMessageLog
-from qgis.gui import QgsFileWidget
+from qgis.core import QgsSettings, QgsProject, QgsVectorDataProvider
+from qgis.gui import QgsGui, QgsFileWidget
 
-from photo2shape.photoimporter import PhotoImporter
+from photo2shape.backends import backendsRegistry
 
 pluginPath = os.path.split(os.path.dirname(__file__))[0]
 WIDGET, BASE = uic.loadUiType(os.path.join(pluginPath, 'ui', 'photo2shapedialogbase.ui'))
 
 
 class Photo2ShapeDialog(BASE, WIDGET):
-    def __init__(self, iface, parent=None):
+    def __init__(self, parent=None):
         super(Photo2ShapeDialog, self).__init__(parent)
         self.setupUi(self)
 
-        self.iface = iface
+        QgsGui.instance().enableAutoGeometryRestore(self)
 
-        self.settings = QgsSettings("alexbruy", "photo2shape")
+        settings = QgsSettings()
 
-        self.fwPhotosPath.setStorageMode(QgsFileWidget.GetDirectory)
-        self.fwPhotosPath.setDialogTitle(self.tr("Select directory"))
-        self.fwPhotosPath.setDefaultRoot(self.settings.value("lastPhotosDirectory", os.path.expanduser("~"), str))
-        self.fwPhotosPath.fileChanged.connect(self.updateLastPhotosPath)
+        self.fwPhotosDirectory.setStorageMode(QgsFileWidget.GetDirectory)
+        self.fwPhotosDirectory.setDialogTitle(self.tr('Select directory'))
+        self.fwPhotosDirectory.setDefaultRoot(settings.value('photo2shape/lastPhotosDirectory', os.path.expanduser('~'), str))
+        self.fwPhotosDirectory.fileChanged.connect(self.updateLastPhotosPath)
 
-        self.fwOutputShape.setStorageMode(QgsFileWidget.SaveFile)
-        self.fwOutputShape.setConfirmOverwrite(True)
-        self.fwOutputShape.setDialogTitle(self.tr("Select file"))
-        self.fwOutputShape.setDefaultRoot(self.settings.value("lastShapeDirectory", QgsProject.instance().homePath(), str))
-        self.fwOutputShape.setFilter(self.tr("ESRI Shapefile (*.shp *.SHP)"))
-        self.fwOutputShape.fileChanged.connect(self.updateLastShapePath)
+        self.fwOutputFile.setStorageMode(QgsFileWidget.SaveFile)
+        self.fwOutputFile.setConfirmOverwrite(True)
+        self.fwOutputFile.setDialogTitle(self.tr('Select file'))
+        self.fwOutputFile.setDefaultRoot(settings.value('photo2shape/lastOutputDirectory', QgsProject.instance().homePath(), str))
+        self.fwOutputFile.setFilter(self.tr('ESRI Shapefile (*.shp *.SHP)'))
+        self.fwOutputFile.fileChanged.connect(self.updateLastOutputPath)
 
-        self.thread = QThread()
-        self.importer = PhotoImporter()
+        self.cmbEncoding.addItems(QgsVectorDataProvider.availableEncodings())
+        encoding = settings.value('photo2shape/encoding', 'UTF-8', str)
+        self.cmbEncoding.setCurrentIndex(self.cmbEncoding.findText(encoding))
 
-        self.btnOk = self.buttonBox.button(QDialogButtonBox.Ok)
-        self.btnClose = self.buttonBox.button(QDialogButtonBox.Close)
+        for backend in sorted(backendsRegistry.keys()):
+            self.cmbBackend.addItem(backendsRegistry[backend].displayName(), backend)
 
-        self.importer.moveToThread(self.thread)
-        self.importer.importError.connect(self.thread.quit)
-        self.importer.importError.connect(self.importCanceled)
-        self.importer.importMessage.connect(self.logMessage)
-        self.importer.importFinished.connect(self.thread.quit)
-        self.importer.importFinished.connect(self.importCompleted)
-        self.importer.photoProcessed.connect(self.updateProgress)
+        backend = settings.value('photo2shape/backend', 'exifread', str)
+        self.cmbBackend.setCurrentIndex(self.cmbBackend.findData(backend))
 
-        self.thread.started.connect(self.importer.importPhotos)
+        self.chkRecurse.setChecked(settings.value('photo2shape/recurse', True, bool))
+        self.chkAppend.setChecked(settings.value('photo2shape/append', False, bool))
+        self.chkAddToCanvas.setChecked(settings.value('photo2shape/addToCanvas', True, bool))
 
-        self.encoding = self.settings.value("encoding", "utf-8", str)
-        self.chkRecurse.setChecked(self.settings.value("recurse", True, bool))
-        self.chkAppend.setChecked(self.settings.value("append", True, bool))
-        self.chkLoadLayer.setChecked(self.settings.value("loadLayer", True, bool))
+        self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(False)
 
-    def closeEvent(self, event):
-        self._saveSettings()
-        QDialog.closeEvent(self, event)
+    def updateLastPhotosPath(self, filePath):
+        self.fwPhotosDirectory.setDefaultRoot(filePath)
+        QgsSettings().setValue('photo2shape/lastPhotosDirectory', os.path.dirname(filePath))
+        self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(filePath != "" and self.fwOutputFile.filePath() != "")
 
-    def updateLastPhotosPath(self, dirPath):
-        self.fwPhotosPath.setDefaultRoot(dirPath)
-        self.settings.setValue("lastPhotosDirectory", os.path.dirname(dirPath))
-
-    def updateLastShapePath(self, shapePath):
-        self.fwOutputShape.setDefaultRoot(shapePath)
-        self.settings.setValue("lastShapeDirectory", os.path.dirname(shapePath))
+    def updateLastOutputPath(self, filePath):
+        self.fwOutputFile.setDefaultRoot(filePath)
+        QgsSettings().setValue('photo2shape/lastOutputDirectory', os.path.dirname(filePath))
+        self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(filePath != "" and self.fwPhotosDirectory.filePath() != "")
 
     def reject(self):
-        self._saveSettings()
         QDialog.reject(self)
 
     def accept(self):
+        if self.chkAppend.isChecked() and not os.path.isfile(self.fwOutputFile.filePath()):
+            QMessageBox.warning(self,
+                                self.tr('Appending is not possible'),
+                                self.tr('Output file is a new file and can not be used in the "append" mode. '
+                                        'Either specify existing file or uncheck corresponding checkbox.'))
+            return
+
         self._saveSettings()
 
-        dirName = self.fwPhotosPath.filePath()
-        if dirName == '':
-            self.iface.messageBar().pushWarning(
-                self.tr("Path is not set"),
-                self.tr("Path to photos is not set. Please specify directory "
-                        "with photos and try again."))
-            return
-
-        fileName = self.fwOutputShape.filePath()
-        if fileName == "":
-            self.iface.messageBar().pushWarning(
-                self.tr("Output file is not set"),
-                self.tr("Output file name is missing. Please specify correct "
-                        "output file and try again."))
-            return
-
-        if self.chkAppend.isChecked() and not os.path.isfile(fileName):
-            self.iface.messageBar().pushWarning(
-                self.tr("Appending is not possible"),
-                self.tr("Output file is a new file and can not be used "
-                        "in 'append' mode. Either specify existing file "
-                        "or uncheck corresponding checkbox."))
-            return
-
-        self.importer.setPhotosDirectory(dirName)
-        self.importer.setOutputPath(fileName)
-        self.importer.setEncoding(self.encoding)
-        self.importer.setRecurseDirs(self.chkRecurse.isChecked())
-        self.importer.setAppendFile(self.chkAppend.isChecked())
-
-        self.thread.start()
-
-        self.btnOk.setEnabled(False)
-        self.btnClose.setEnabled(False)
-
-    def updateProgress(self, value):
-        self.progressBar.setValue(value)
-
-    def logMessage(self, message, level=QgsMessageLog.INFO):
-        QgsMessageLog.logMessage(message, "Photo2Shape", level)
-
-    def importCanceled(self, message):
-        self.iface.messageBar().pushWarning(self.tr("Import error"),
-                                            message)
-        self._restoreGui()
-
-    def importCompleted(self):
-        self.iface.messageBar().pushSuccess(
-            self.tr("Import completed"),
-            self.tr("Photos imported sucessfully."))
-        if self.chkLoadLayer.isChecked():
-            self._loadLayer()
-
-        self._restoreGui()
-
-    def _loadLayer(self):
-        fName = self.fwOutputShape.filePath()
-        layer = QgsVectorLayer(fName, os.path.basename(fName), "ogr")
-
-        if layer.isValid():
-            layer.loadNamedStyle(
-                os.path.join(pluginPath, "resources", "photos.qml"))
-            QgsProject.instance().addMapLayer(layer)
-        else:
-            self.iface.messageBar().pushWarning(
-                self.tr("No output"),
-                self.tr("Can not load output file."))
-
-    def _restoreGui(self):
-        self.progressBar.setValue(0)
-        self.btnOk.setEnabled(True)
-        self.btnClose.setEnabled(True)
+        QDialog.accept(self)
 
     def _saveSettings(self):
-        self.settings.setValue("recurse", self.chkRecurse.isChecked())
-        self.settings.setValue("append", self.chkAppend.isChecked())
-        self.settings.setValue("loadLayer", self.chkLoadLayer.isChecked())
+        settings = QgsSettings()
+        settings.setValue('photo2shape/encoding', self.cmbEncoding.currentText())
+        settings.setValue('photo2shape/backend', self.cmbBackend.currentData())
+        settings.setValue('photo2shape/recurse', self.chkRecurse.isChecked())
+        settings.setValue('photo2shape/append', self.chkAppend.isChecked())
+        settings.setValue('photo2shape/addToCanvas', self.chkAddToCanvas.isChecked())
+
+    def photosDirectory(self):
+        return self.fwPhotosDirectory.filePath()
+
+    def outputFile(self):
+        return self.fwOutputFile.filePath()
+
+    def encoding(self):
+        return self.cmbEncoding.currentText()
+
+    def backend(self):
+        return self.cmbBackend.currentData()
+
+    def recurse(self):
+        return self.chkRecurse.isChecked()
+
+    def append(self):
+        return self.chkAppend.isChecked()
+
+    def addToCanvas(self):
+        return self.chkAddToCanvas.isChecked()

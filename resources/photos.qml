@@ -1,31 +1,63 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis simplifyDrawingTol="1" hasScaleBasedVisibilityFlag="0" minScale="1e+08" simplifyMaxScale="1" simplifyDrawingHints="0" simplifyAlgorithm="0" simplifyLocal="1" version="2.99.0-Master" maxScale="0" readOnly="0">
-  <renderer-v2 forceraster="0" symbollevels="0" enableorderby="0" type="singleSymbol">
+<qgis maxScale="0" simplifyAlgorithm="0" readOnly="0" version="3.3.0-Master" hasScaleBasedVisibilityFlag="0" minScale="1e+08" simplifyDrawingTol="1" simplifyDrawingHints="0" simplifyLocal="1" labelsEnabled="0" simplifyMaxScale="1">
+  <renderer-v2 type="singleSymbol" symbollevels="0" enableorderby="0" forceraster="0">
     <symbols>
-      <symbol name="0" alpha="1" clip_to_extent="1" type="marker">
-        <layer pass="0" enabled="1" locked="0" class="SvgMarker">
-          <prop v="0" k="angle"/>
-          <prop v="0,0,0,255" k="color"/>
-          <prop v="0" k="fixedAspectRatio"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="gpsicons/camera.svg" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MM" k="offset_unit"/>
-          <prop v="255,255,255,255" k="outline_color"/>
-          <prop v="0" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MM" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="4" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MM" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+      <symbol type="marker" name="0" alpha="1" clip_to_extent="1">
+        <layer locked="0" pass="0" class="SvgMarker" enabled="1">
+          <prop k="angle" v="0"/>
+          <prop k="color" v="255,0,0,255"/>
+          <prop k="fixedAspectRatio" v="0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="arrows/Arrow_06.svg"/>
+          <prop k="offset" v="0.00000000000000006,-3.00000000000000044"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="outline_color" v="35,35,35,255"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MM"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="6"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MM"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
-              <Option name="name" value="" type="QString"/>
+              <Option type="QString" name="name" value=""/>
+              <Option type="Map" name="properties">
+                <Option type="Map" name="angle">
+                  <Option type="bool" name="active" value="true"/>
+                  <Option type="QString" name="field" value="azimuth"/>
+                  <Option type="int" name="type" value="2"/>
+                </Option>
+              </Option>
+              <Option type="QString" name="type" value="collection"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+        <layer locked="0" pass="0" class="SvgMarker" enabled="1">
+          <prop k="angle" v="0"/>
+          <prop k="color" v="0,0,0,255"/>
+          <prop k="fixedAspectRatio" v="0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="gpsicons/camera.svg"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="outline_color" v="255,255,255,255"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MM"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="4"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MM"/>
+          <prop k="vertical_anchor_point" v="1"/>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option type="QString" name="name" value=""/>
               <Option name="properties"/>
-              <Option name="type" value="collection" type="QString"/>
+              <Option type="QString" name="type" value="collection"/>
             </Option>
           </data_defined_properties>
         </layer>
@@ -43,17 +75,17 @@
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
   <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-    <DiagramCategory minimumSize="0" height="15" rotationOffset="270" scaleBasedVisibility="0" scaleDependency="Area" sizeType="MM" minScaleDenominator="0" barWidth="5" enabled="0" labelPlacementMethod="XHeight" penAlpha="255" penWidth="0" diagramOrientation="Up" width="15" backgroundAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" lineSizeType="MM" sizeScale="3x:0,0,0,0,0,0" lineSizeScale="3x:0,0,0,0,0,0" penColor="#000000" opacity="1">
+    <DiagramCategory penColor="#000000" opacity="1" sizeType="MM" minScaleDenominator="0" barWidth="5" rotationOffset="270" maxScaleDenominator="1e+08" scaleBasedVisibility="0" scaleDependency="Area" backgroundColor="#ffffff" height="15" penAlpha="255" backgroundAlpha="255" sizeScale="3x:0,0,0,0,0,0" penWidth="0" diagramOrientation="Up" lineSizeScale="3x:0,0,0,0,0,0" labelPlacementMethod="XHeight" enabled="0" minimumSize="0" lineSizeType="MM" width="15">
       <fontProperties description="Sans Serif,9,-1,5,50,0,0,0,0,0" style=""/>
-      <attribute field="" label="" color="#000000"/>
+      <attribute color="#000000" label="" field=""/>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings zIndex="0" priority="0" obstacle="0" linePlacementFlags="2" dist="0" placement="0" showAll="1">
+  <DiagramLayerSettings dist="0" placement="0" priority="0" obstacle="0" zIndex="0" showAll="1" linePlacementFlags="2">
     <properties>
       <Option type="Map">
-        <Option name="name" value="" type="QString"/>
+        <Option type="QString" name="name" value=""/>
         <Option name="properties"/>
-        <Option name="type" value="collection" type="QString"/>
+        <Option type="QString" name="type" value="collection"/>
       </Option>
     </properties>
   </DiagramLayerSettings>
@@ -62,19 +94,19 @@
       <editWidget type="ExternalResource">
         <config>
           <Option type="Map">
-            <Option name="DocumentViewer" value="1" type="int"/>
-            <Option name="DocumentViewerHeight" value="0" type="int"/>
-            <Option name="DocumentViewerWidth" value="0" type="int"/>
-            <Option name="FileWidget" value="true" type="bool"/>
-            <Option name="FileWidgetButton" value="true" type="bool"/>
-            <Option name="FileWidgetFilter" value="" type="QString"/>
-            <Option name="PropertyCollection" type="Map">
-              <Option name="name" value="" type="QString"/>
-              <Option name="properties"/>
-              <Option name="type" value="collection" type="QString"/>
+            <Option type="int" name="DocumentViewer" value="1"/>
+            <Option type="int" name="DocumentViewerHeight" value="0"/>
+            <Option type="int" name="DocumentViewerWidth" value="0"/>
+            <Option type="bool" name="FileWidget" value="true"/>
+            <Option type="bool" name="FileWidgetButton" value="true"/>
+            <Option type="QString" name="FileWidgetFilter" value=""/>
+            <Option type="Map" name="PropertyCollection">
+              <Option type="QString" name="name" value=""/>
+              <Option type="Unknown" name="properties" value=""/>
+              <Option type="QString" name="type" value="collection"/>
             </Option>
-            <Option name="RelativeStorage" value="0" type="int"/>
-            <Option name="StorageMode" value="0" type="int"/>
+            <Option type="int" name="RelativeStorage" value="0"/>
+            <Option type="int" name="StorageMode" value="0"/>
           </Option>
         </config>
       </editWidget>
@@ -130,66 +162,66 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias name="" field="filepath" index="0"/>
-    <alias name="" field="longitude" index="1"/>
-    <alias name="" field="latitude" index="2"/>
-    <alias name="" field="altitude" index="3"/>
-    <alias name="" field="north" index="4"/>
-    <alias name="" field="azimuth" index="5"/>
-    <alias name="" field="gps_date" index="6"/>
-    <alias name="" field="img_date" index="7"/>
+    <alias name="" index="0" field="filepath"/>
+    <alias name="" index="1" field="longitude"/>
+    <alias name="" index="2" field="latitude"/>
+    <alias name="" index="3" field="altitude"/>
+    <alias name="" index="4" field="north"/>
+    <alias name="" index="5" field="azimuth"/>
+    <alias name="" index="6" field="gps_date"/>
+    <alias name="" index="7" field="img_date"/>
   </aliases>
   <excludeAttributesWMS/>
   <excludeAttributesWFS/>
   <defaults>
-    <default field="filepath" applyOnUpdate="0" expression=""/>
-    <default field="longitude" applyOnUpdate="0" expression=""/>
-    <default field="latitude" applyOnUpdate="0" expression=""/>
-    <default field="altitude" applyOnUpdate="0" expression=""/>
-    <default field="north" applyOnUpdate="0" expression=""/>
-    <default field="azimuth" applyOnUpdate="0" expression=""/>
-    <default field="gps_date" applyOnUpdate="0" expression=""/>
-    <default field="img_date" applyOnUpdate="0" expression=""/>
+    <default applyOnUpdate="0" expression="" field="filepath"/>
+    <default applyOnUpdate="0" expression="" field="longitude"/>
+    <default applyOnUpdate="0" expression="" field="latitude"/>
+    <default applyOnUpdate="0" expression="" field="altitude"/>
+    <default applyOnUpdate="0" expression="" field="north"/>
+    <default applyOnUpdate="0" expression="" field="azimuth"/>
+    <default applyOnUpdate="0" expression="" field="gps_date"/>
+    <default applyOnUpdate="0" expression="" field="img_date"/>
   </defaults>
   <constraints>
-    <constraint constraints="0" field="filepath" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="longitude" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="latitude" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="altitude" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="north" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="azimuth" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="gps_date" unique_strength="0" exp_strength="0" notnull_strength="0"/>
-    <constraint constraints="0" field="img_date" unique_strength="0" exp_strength="0" notnull_strength="0"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="filepath"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="longitude"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="latitude"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="altitude"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="north"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="azimuth"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="gps_date"/>
+    <constraint exp_strength="0" notnull_strength="0" constraints="0" unique_strength="0" field="img_date"/>
   </constraints>
   <constraintExpressions>
-    <constraint field="filepath" exp="" desc=""/>
-    <constraint field="longitude" exp="" desc=""/>
-    <constraint field="latitude" exp="" desc=""/>
-    <constraint field="altitude" exp="" desc=""/>
-    <constraint field="north" exp="" desc=""/>
-    <constraint field="azimuth" exp="" desc=""/>
-    <constraint field="gps_date" exp="" desc=""/>
-    <constraint field="img_date" exp="" desc=""/>
+    <constraint exp="" desc="" field="filepath"/>
+    <constraint exp="" desc="" field="longitude"/>
+    <constraint exp="" desc="" field="latitude"/>
+    <constraint exp="" desc="" field="altitude"/>
+    <constraint exp="" desc="" field="north"/>
+    <constraint exp="" desc="" field="azimuth"/>
+    <constraint exp="" desc="" field="gps_date"/>
+    <constraint exp="" desc="" field="img_date"/>
   </constraintExpressions>
   <attributeactions>
     <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
-    <actionsetting name="Open file" capture="0" shortTitle="" icon="" id="{d6190f63-61f2-40b3-b32f-3adf8aba9211}" action="[%filepath%]" notificationMessage="" type="5">
+    <actionsetting notificationMessage="" type="5" name="Open file" id="{bb28fa30-3c43-4408-a6dc-ce5ff67559f9}" action="[%filepath%]" isEnabledOnlyWhenEditable="0" shortTitle="" capture="0" icon="">
       <actionScope id="Feature"/>
       <actionScope id="Canvas"/>
       <actionScope id="Field"/>
     </actionsetting>
   </attributeactions>
-  <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
+  <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
     <columns>
-      <column name="filepath" hidden="0" width="-1" type="field"/>
-      <column name="longitude" hidden="0" width="-1" type="field"/>
-      <column name="latitude" hidden="0" width="-1" type="field"/>
-      <column name="altitude" hidden="0" width="-1" type="field"/>
-      <column name="north" hidden="0" width="-1" type="field"/>
-      <column name="azimuth" hidden="0" width="-1" type="field"/>
-      <column name="gps_date" hidden="0" width="-1" type="field"/>
-      <column name="img_date" hidden="0" width="-1" type="field"/>
-      <column hidden="1" width="-1" type="actions"/>
+      <column hidden="0" type="field" width="-1" name="filepath"/>
+      <column hidden="0" type="field" width="-1" name="longitude"/>
+      <column hidden="0" type="field" width="-1" name="latitude"/>
+      <column hidden="0" type="field" width="-1" name="altitude"/>
+      <column hidden="0" type="field" width="-1" name="north"/>
+      <column hidden="0" type="field" width="-1" name="azimuth"/>
+      <column hidden="0" type="field" width="-1" name="gps_date"/>
+      <column hidden="0" type="field" width="-1" name="img_date"/>
+      <column hidden="1" type="actions" width="-1"/>
     </columns>
   </attributetableconfig>
   <editform></editform>
@@ -242,6 +274,9 @@ def my_form_open(dialog, layer, feature):
   </conditionalstyles>
   <expressionfields/>
   <previewExpression>filepath</previewExpression>
-  <mapTip>filename</mapTip>
+  <mapTip>[% CASE
+  WHEN left("filepath", 1) = '/' THEN concat('&lt;img src="file://', "filepath", '" width=200 height=200/>')
+  ELSE concat('&lt;img src="file:///', "filepath", '" width=200 height=200/>')
+END %]</mapTip>
   <layerGeometryType>0</layerGeometryType>
 </qgis>
