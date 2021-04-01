@@ -1,5 +1,5 @@
 SOURCES = __init__.py \
-          photo2shape_plugin.py \
+          photo2shapeplugin.py \
           photoimporter.py \
           gui/photo2shapedialog.py \
           gui/aboutdialog.py
