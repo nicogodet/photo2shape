@@ -34,8 +34,8 @@ from photo2shape.backends.backendbase import BackendBase
 
 class GdalBackend(BackendBase):
 
-    REGEX_COORD = re.compile('\(\s*([-\.\d]+)\s*\)\s*\(\s*([-\.\d]+)\s*\)\s*\(\s*([-\.\d]+)\)')
-    REGEX_DATE = re.compile('\(([\d]+)\)\s*\(([\d]+)\)\s*\(([\d]+)\)')
+    REGEX_COORD = re.compile(r'\(\s*([-\.\d]+)\s*\)\s*\(\s*([-\.\d]+)\s*\)\s*\(\s*([-\.\d]+)\)')
+    REGEX_DATE = re.compile(r'\(([\d]+)\)\s*\(([\d]+)\)\s*\(([\d]+)\)')
 
     def name(self):
         return 'gdal'
