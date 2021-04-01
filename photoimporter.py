@@ -103,7 +103,7 @@ class PhotoImporter(QObject):
             if not tags.keys() & {"GPS GPSLongitude", "GPS GPSLatitude"}:
                 self.importMessage.emit(
                     self.tr("Skipping file {}: "
-                            "there are no GPS tags in it.".format(fName)))
+                            "there are no GPS tags in it.").format(fName))
                 self.photoProcessed.emit(int(count * total))
                 continue
 
@@ -112,7 +112,7 @@ class PhotoImporter(QObject):
             if longitude is None:
                 self.importMessage.emit(
                     self.tr("Skipping file {}: "
-                            "there are no GPS fix data.".format(fName)))
+                            "there are no GPS fix data.").format(fName))
                 self.photoProcessed.emit(int(count * total))
                 continue
 
@@ -145,7 +145,7 @@ class PhotoImporter(QObject):
         if wkbType != QgsWkbTypes.PointZ:
             self.importError.emit(
                 self.tr("File has incorrect WKB type '{}'. Please select layer "
-                        "with 'PointZ' WKB type.".format(QgsWkbTypes.displayString(wkbType))))
+                        "with 'PointZ' WKB type.").format(QgsWkbTypes.displayString(wkbType)))
             return None
 
         return layer

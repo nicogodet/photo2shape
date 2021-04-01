@@ -52,7 +52,7 @@ class AboutDialog(BASE, WIDGET):
 
         self.lblLogo.setPixmap(
             QPixmap(os.path.join(pluginPath, "icons", "photo2shape.png")))
-        self.lblVersion.setText(self.tr("Version: {}".format(version)))
+        self.lblVersion.setText(self.tr("Version: {}").format(version))
 
         doc = QTextDocument()
         doc.setHtml(self.aboutText())
